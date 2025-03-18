@@ -1,3 +1,23 @@
+<?php
+session_start();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = $_POST['email'] ?? '';
+    $password = $_POST['password'] ?? '';
+
+    // Dummy credentials for demonstration
+    $validEmail = 'user@example.com';
+    $validPassword = 'password123';
+
+    if ($email === $validEmail && $password === $validPassword) {
+        $_SESSION['user'] = $email;
+        header('Location: pages/dashboard.php'); // Redirect to dashboard
+        exit;
+    } else {
+        $error = 'Invalid email or password.';
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -155,15 +175,18 @@
         <div class="right-panel">
             <h2>Welcome back</h2>
             <p>Sign in to your account</p>
-            <form>
-                <input type="email" placeholder="Enter your email">
-                <input type="password" placeholder="Enter your password">
+            <?php if (!empty($error)): ?>
+                <p style="color: red;"><?= htmlspecialchars($error) ?></p>
+            <?php endif; ?>
+            <form method="POST" action="">
+                <input type="email" name="email" placeholder="Enter your email" required>
+                <input type="password" name="password" placeholder="Enter your password" required>
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <div>
                         <input type="checkbox" id="remember-me">
                         <label for="remember-me">Remember me</label>
                     </div>
-                    <a href="#" style="color: #4a00e0;">Forgot password?</a>
+                    <a href="pages/forgot-password.php" style="color: #4a00e0;">Forgot password?</a>
                 </div>
                 <button type="submit">Sign in</button>
             </form>
@@ -173,7 +196,7 @@
                 <button><img src="icons/linkedin.svg" alt="LinkedIn" width="20"> LinkedIn</button>
             </div>
             <div class="signup-link">
-                <p>Don't have an account? <a href="#" style="color: #4a00e0;">Sign up for free</a></p>
+                <p>Don't have an account? <a href="pages/signup.php" style="color: #4a00e0;">Sign up for free</a></p>
             </div>
         </div>
     </div>
