@@ -35,11 +35,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .header {
             width: 100%;
             background-color: white;
-            padding: 10px 50px; /* Increase padding to move Sign In further from the right edge */
+            padding: 10px 20px; /* Adjust padding to fit within the viewport */
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             display: flex;
             align-items: center;
             justify-content: space-between;
+            box-sizing: border-box; /* Ensure padding is included in width calculation */
         }
         .header div {
             display: flex;

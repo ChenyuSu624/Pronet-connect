@@ -166,9 +166,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             </div>
             <div class="footer">
-                <img src="icons/white-man.png" alt="user" width="40">
-                <img src="icons/woman.png" alt="user" width="40">
-                <img src="icons/black-man.png" alt="user" width="40">
+                <img src="icons/user/white-man.png" alt="user" width="40">
+                <img src="icons/user/woman.png" alt="user" width="40">
+                <img src="icons/user/black-man.png" alt="user" width="40">
                 <p>Join 1M+ professionals</p>
             </div>
         </div>

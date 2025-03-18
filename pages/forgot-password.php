@@ -28,11 +28,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .header {
             width: 100%;
             background-color: white;
-            padding: 10px 20px; /* Adjust padding to move content away from the left edge */
+            padding: 10px 20px; /* Adjust padding to fit within the viewport */
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             display: flex;
             align-items: center;
             justify-content: flex-start; /* Align content to the left */
+            box-sizing: border-box; /* Ensure padding is included in width calculation */
         }
         .header img {
             height: 40px; /* Increase icon size */
