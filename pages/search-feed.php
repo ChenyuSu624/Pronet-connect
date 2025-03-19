@@ -1,22 +1,33 @@
 <?php
-$query = $_GET['query'] ?? '';
+require_once '../data/dummy-data.php'; // Include the dummy data file
 
-// Dummy feed data
-$feedItems = [
-    ['title' => 'Sarah Chen', 'content' => 'Excited to share that we\'re hiring for multiple UX Research positions!'],
-    ['title' => 'Michael Roberts', 'content' => 'Just published a new article on building scalable microservices architecture.'],
-    ['title' => 'Emma Wilson', 'content' => 'Looking for a talented graphic designer to join our team.'],
-];
+$query = $_GET['query'] ?? '';
 
 // Filter feed items based on the query
 $filteredFeed = array_filter($feedItems, function($item) use ($query) {
-    return stripos($item['title'], $query) !== false || stripos($item['content'], $query) !== false;
+    $name = $item['name'] ?? '';
+    $title = $item['title'] ?? '';
+    $content = $item['content'] ?? '';
+    return stripos($name, $query) !== false || 
+           stripos($title, $query) !== false || 
+           stripos($content, $query) !== false;
 });
 
+// Get offset and limit from query parameters
+$offset = isset($_GET['offset']) ? (int)$_GET['offset'] : 0;
+$limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 3;
+
+// Slice the feed items based on offset and limit
+$paginatedFeed = array_slice($filteredFeed, $offset, $limit);
+
 // Generate HTML for the feed
-foreach ($filteredFeed as $item) {
+foreach ($paginatedFeed as $item) {
+    $name = htmlspecialchars($item['name'] ?? 'Unknown');
+    $title = htmlspecialchars($item['title'] ?? 'No Title');
+    $content = htmlspecialchars($item['content'] ?? 'No Content');
     echo '<div class="feed-item">';
-    echo '<h4>' . htmlspecialchars($item['title']) . '</h4>';
-    echo '<p>' . htmlspecialchars($item['content']) . '</p>';
+    echo '<h4>' . $name . ' - ' . $title . '</h4>';
+    echo '<p>' . $content . '</p>';
     echo '</div>';
 }
+?>

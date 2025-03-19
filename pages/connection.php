@@ -6,8 +6,7 @@ if (!isset($_SESSION['user'])) {
     exit;
 }
 
-// Use the profile image passed from the dashboard or fallback to the session value
-$randomProfileImage = $_GET['profile_image'] ?? $_SESSION['profile_image'] ?? '../icons/default-profile.png';
+require_once '../data/dummy-data.php'; // Import the connections array
 
 // Randomly select profile images for connections from the icons/user directory
 $userIcons = glob('../icons/user/*.png'); // Adjust the extension if needed
@@ -20,49 +19,6 @@ if (!isset($_SESSION['profile_image'])) {
     $_SESSION['profile_image'] = !empty($userIcons) ? $userIcons[array_rand($userIcons)] : '../icons/default-profile.png';
 }
 $randomProfileImage = $_SESSION['profile_image'];
-
-// Mocked connections data
-$connections = [
-    ['name' => 'Sarah Wilson', 'title' => 'Senior Product Designer at Tech Corp', 'location' => 'San Francisco, CA'],
-    ['name' => 'Michael Chen', 'title' => 'Software Engineer at StartupX', 'location' => 'New York, NY'],
-    ['name' => 'Emily Rodriguez', 'title' => 'Marketing Manager at Global Inc', 'location' => 'Austin, TX'],
-    ['name' => 'David Kim', 'title' => 'Data Scientist at AI Labs', 'location' => 'Seattle, WA'],
-    ['name' => 'Emma Johnson', 'title' => 'HR Manager at PeopleFirst', 'location' => 'Chicago, IL'],
-    ['name' => 'Chris Lee', 'title' => 'Full Stack Developer at WebWorks', 'location' => 'Boston, MA'],
-    ['name' => 'Sophia Brown', 'title' => 'Content Strategist at MediaWorks', 'location' => 'Los Angeles, CA'],
-    ['name' => 'James Anderson', 'title' => 'Product Manager at InnovateX', 'location' => 'San Diego, CA'],
-    ['name' => 'Olivia Martinez', 'title' => 'UX Designer at DesignPro', 'location' => 'Denver, CO'],
-    ['name' => 'Liam Garcia', 'title' => 'Backend Developer at CodeBase', 'location' => 'Dallas, TX'],
-    ['name' => 'Isabella Davis', 'title' => 'Marketing Specialist at AdSphere', 'location' => 'Miami, FL'],
-    ['name' => 'Noah Wilson', 'title' => 'DevOps Engineer at CloudSync', 'location' => 'Atlanta, GA'],
-    ['name' => 'Mia Taylor', 'title' => 'Graphic Designer at PixelPerfect', 'location' => 'Portland, OR'],
-    ['name' => 'Ethan Moore', 'title' => 'AI Researcher at NeuralNet', 'location' => 'Palo Alto, CA'],
-    ['name' => 'Ava White', 'title' => 'Recruiter at TalentHub', 'location' => 'Phoenix, AZ'],
-    ['name' => 'Lucas Harris', 'title' => 'Cybersecurity Analyst at SecureTech', 'location' => 'Houston, TX'],
-    ['name' => 'Charlotte Clark', 'title' => 'Operations Manager at BizFlow', 'location' => 'Nashville, TN'],
-    ['name' => 'Benjamin Lewis', 'title' => 'Mobile Developer at Appify', 'location' => 'Orlando, FL'],
-    ['name' => 'Amelia Walker', 'title' => 'Data Analyst at InsightCorp', 'location' => 'Salt Lake City, UT'],
-    ['name' => 'Elijah Hall', 'title' => 'Blockchain Developer at CryptoChain', 'location' => 'San Francisco, CA'],
-    ['name' => 'Harper Young', 'title' => 'Social Media Manager at Trendify', 'location' => 'Las Vegas, NV'],
-    ['name' => 'Alexander King', 'title' => 'Cloud Architect at SkyNet', 'location' => 'Austin, TX'],
-    ['name' => 'Ella Wright', 'title' => 'HR Specialist at PeopleFirst', 'location' => 'Chicago, IL'],
-    ['name' => 'William Scott', 'title' => 'Game Developer at PlayWorks', 'location' => 'Seattle, WA'],
-    ['name' => 'Grace Green', 'title' => 'SEO Specialist at RankBoost', 'location' => 'New York, NY'],
-    ['name' => 'Henry Adams', 'title' => 'IT Consultant at TechAdvisors', 'location' => 'Boston, MA'],
-    ['name' => 'Victoria Baker', 'title' => 'Project Manager at AgileFlow', 'location' => 'San Diego, CA'],
-    ['name' => 'Daniel Perez', 'title' => 'Machine Learning Engineer at AI Labs', 'location' => 'Palo Alto, CA'],
-    ['name' => 'Sofia Rivera', 'title' => 'Content Creator at MediaSphere', 'location' => 'Los Angeles, CA'],
-    ['name' => 'Jackson Carter', 'title' => 'Network Engineer at NetSecure', 'location' => 'Houston, TX'],
-    ['name' => 'Scarlett Mitchell', 'title' => 'Event Coordinator at PlanIt', 'location' => 'Miami, FL'],
-    ['name' => 'Sebastian Ramirez', 'title' => 'Frontend Developer at Webify', 'location' => 'Denver, CO'],
-    ['name' => 'Aria Torres', 'title' => 'Business Analyst at InsightCorp', 'location' => 'Salt Lake City, UT'],
-    ['name' => 'Matthew Brooks', 'title' => 'Technical Writer at DocuTech', 'location' => 'Portland, OR'],
-    ['name' => 'Chloe Bennett', 'title' => 'Customer Success Manager at ClientFirst', 'location' => 'Phoenix, AZ'],
-    ['name' => 'Levi Foster', 'title' => 'AI Product Manager at NeuralNet', 'location' => 'San Francisco, CA'],
-    ['name' => 'Lily Morgan', 'title' => 'Digital Marketer at AdSphere', 'location' => 'Atlanta, GA'],
-    ['name' => 'Mason Reed', 'title' => 'Software Tester at QualityCheck', 'location' => 'Dallas, TX'],
-    ['name' => 'Zoe Hughes', 'title' => 'E-commerce Specialist at ShopEase', 'location' => 'Los Angeles, CA'],
-];
 
 // Pagination logic
 $connectionsPerPage = 6;
@@ -108,8 +64,6 @@ $paginatedConnections = array_slice($connections, $startIndex, $connectionsPerPa
             cursor: pointer; /* Add pointer cursor for clickable logo */
         }
         .header .logo a {
-            display: flex;
-            align-items: center; /* Vertically center the link content */
             text-decoration: none; /* Remove underline */
             color: black; /* Ensure text color matches the design */
         }
@@ -323,7 +277,7 @@ $paginatedConnections = array_slice($connections, $startIndex, $connectionsPerPa
             <img src="../icons/bell-outline.png" alt="Notifications">
             <img src="../icons/email-outline.png" alt="Messages">
             <div class="profile">
-                <img src="<?= htmlspecialchars($randomProfileImage) ?>" alt="Profile"> <!-- Use the passed or session profile image -->
+                <img src="<?= htmlspecialchars($randomProfileImage) ?>" alt="Profile"> <!-- Use the same random profile image -->
             </div>
         </div>
     </div>

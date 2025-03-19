@@ -13,6 +13,11 @@ if (!empty($userIcons)) {
 } else {
     $randomProfileImage = '../icons/default-profile.png'; // Fallback to a default profile image
 }
+
+require_once '../data/dummy-data.php'; // Import the connections array
+
+// Randomly pick three connections for "People You May Know"
+$randomConnections = array_rand($connections, min(3, count($connections)));
 ?>
 
 <!DOCTYPE html>
@@ -134,6 +139,7 @@ if (!empty($userIcons)) {
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
             margin-bottom: 20px; /* Add vertical white space between panels */
+            padding-bottom: 30px; /* Add more white space at the bottom */
         }
         .sidebar, .rightbar {
             background-color: white;
@@ -380,7 +386,10 @@ if (!empty($userIcons)) {
                 </div>
             </div>
             <div class="feed panel" id="feedPanel">
-                <!-- Feed items will be dynamically loaded here -->
+                <div id="feedItemsContainer">
+                    <!-- Feed items will be dynamically loaded here -->
+                </div>
+                <button id="loadMoreButton" style="margin: 10px auto; padding: 10px; background-color: #4a00e0; color: white; border: none; border-radius: 4px; cursor: pointer; width: 150px; display: block;">Load More</button>
             </div>
         </div>
         <div class="right-panel">
@@ -396,8 +405,9 @@ if (!empty($userIcons)) {
             </div>
             <div class="panel">
                 <h4>People You May Know</h4>
-                <a href="#">Emma Wilson</a>
-                <a href="#">David Kim</a>
+                <?php foreach ((array) $randomConnections as $index): ?>
+                    <a href="#"><?= htmlspecialchars($connections[$index]['name']) ?></a>
+                <?php endforeach; ?>
             </div>
         </div>
     </div>
@@ -419,7 +429,7 @@ if (!empty($userIcons)) {
         fetch('search-feed.php')
             .then(response => response.text())
             .then(data => {
-                document.getElementById('feedPanel').innerHTML = data;
+                document.getElementById('feedItemsContainer').innerHTML = data; // Update feed items container
             })
             .catch(error => console.error('Error loading feed:', error));
 
@@ -440,6 +450,28 @@ if (!empty($userIcons)) {
                 alert('Please enter some content before posting.');
             }
         });
+
+        let feedOffset = 0; // Track the number of feeds loaded
+        const initialLoadCount = 3; // Number of feeds to load initially
+        const loadMoreCount = 3; // Number of feeds to load on "Load More"
+
+        // Function to load feeds
+        function loadFeeds(limit) {
+            fetch(`../pages/search-feed.php?offset=${feedOffset}&limit=${limit}`)
+                .then(response => response.text())
+                .then(data => {
+                    const feedItemsContainer = document.getElementById('feedItemsContainer');
+                    feedItemsContainer.insertAdjacentHTML('beforeend', data); // Append new feeds above the button
+                    feedOffset += limit; // Increment offset
+                })
+                .catch(error => console.error('Error loading feed:', error));
+        }
+
+        // Load initial feeds
+        loadFeeds(initialLoadCount);
+
+        // Add event listener to "Load More" button
+        document.getElementById('loadMoreButton').addEventListener('click', () => loadFeeds(loadMoreCount));
     </script>
 </body>
 </html>
