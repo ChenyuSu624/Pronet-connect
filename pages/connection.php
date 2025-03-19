@@ -47,16 +47,61 @@ $paginatedConnections = array_slice($connections, $startIndex, $connectionsPerPa
             height: 100vh;
         }
         .header {
-            width: 100%;
-            background-color: white;
-            padding: 10px 20px; /* Adjust padding to fit within the viewport */
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            position: relative; /* Allow positioning of elements */
-            flex-wrap: nowrap; /* Prevent wrapping of elements */
-            box-sizing: border-box; /* Ensure padding is included in width calculation */
+            padding: 10px 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 100%; /* Ensure the header spans the full width */
+            box-sizing: border-box; /* Include padding in width calculation */
+        }
+        .header .title {
+            display: flex;
+            align-items: center;
+        }
+        .header .title a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+        }
+        .header .title img {
+            margin-right: 10px;
+        }
+        .header input[type="text"] {
+            flex-grow: 1;
+            margin: 0 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .header .icons {
+            display: flex;
+            align-items: center;
+        }
+        .header .icons img {
+            margin-left: 10px;
+        }
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: center;
+            }
+            .header .title {
+                margin-bottom: 10px;
+            }
+            .header input[type="text"] {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            .header .icons {
+                justify-content: center;
+                width: 100%;
+            }
+            .header .icons img {
+                margin: 0 5px;
+            }
         }
         .header .logo {
             display: flex;
@@ -257,11 +302,15 @@ $paginatedConnections = array_slice($connections, $startIndex, $connectionsPerPa
         .pagination button:hover:not(.disabled) {
             background-color: #3a00b0; /* Match login page hover color */
         }
+        .header .title span {
+            font-weight: bold; /* Make the title bold */
+            font: 24px;
+        }
     </style>
 </head>
 <body>
     <div class="header">
-        <div class="logo">
+        <div class="title">
             <a href="dashboard.php">
                 <img src="../icons/pronet.gif" alt="ProNet Connect">
                 <span>ProNet Connect</span>
